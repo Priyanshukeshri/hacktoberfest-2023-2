@@ -1,0 +1,39 @@
+Given an unsorted array A of size N that contains only positive integers, find a continuous sub-array that adds to a given number S and return the left and right index(1-based indexing) of that subarray.
+
+In case of multiple subarrays, return the subarray indexes which come first on moving from left to right.
+
+Note:- You have to return an ArrayList consisting of two elements left and right. In case no such subarray exists return an array consisting of element -1.
+
+
+
+def findSubarraySum(A, S):
+    current_sum = 0
+    left = 0
+    subarray = []
+    
+    for right in range(len(A)):
+        current_sum += A[right]
+        
+        # Check if the current sum exceeds S, if so, remove elements from the left side.
+        while current_sum > S:
+            current_sum -= A[left]
+            left += 1
+        
+        # If the current sum equals S, we found a subarray.
+        if current_sum == S:
+            subarray = [left + 1, right + 1]  # 1-based indexing
+        
+        # If a subarray is found, break the loop to get the leftmost subarray.
+        if subarray:
+            break
+
+    if not subarray:
+        subarray = [-1]  # If no subarray is found, return -1.
+
+    return subarray
+
+# Example usage:
+A = [1, 2, 3, 4, 5, 6, 7, 8]
+S = 15
+result = findSubarraySum(A, S)
+print(result)  # Output: [1, 5]
